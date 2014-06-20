@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div>
+    <div><label>用户名</label><input type="text" id="a"></div>
+    <button onclick="aa"> 登陆</button>
+</div>
+
+<script>
+    function post(url, data, cb) {
+        var a = new XMLHttpRequest();
+        xhr.open("POST", "url");
+        xhr.send(data);
+        xhr.addEventListener("load", function () {
+            cb && cb()
+        }, false);
+
+    }
+    function aa() {
+        var val = document.querySelector('#a').value;
+
+        var player=new Player({
+
+        })
+        post('server', , function () {
+            localStorage.setItem('u', val);
+            location.href = 'index.html';
+        })
+
+
+    }
+</script>
+</body>
+</html>
