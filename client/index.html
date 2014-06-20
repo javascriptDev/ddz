@@ -25,9 +25,8 @@
             }
 
         }
+
         window.onload = function () {
-            var val = 'asd';
-            var data = JSON.stringify(new Player({uname: val}));
             var event = {
                 addPlayer: 'addPlayer',
                 deal: 'deal',       //发牌
@@ -35,16 +34,31 @@
                 pillage: 'pillage'  //抢地主
             }
 
-            var socket = io.connect('http://localhost:8000');
+            var socket = io.connect('http://localhost');
 
-            socket.on(event.addPlayer, function (data) {
+            me = new Player({uname: 'a'+Math.random()*199});
+
+
+            //模拟登陆,
+            post('http://localhost:8000/login', JSON.stringify(me), function (data) {
+                console.log('登陆成功');
+                data = JSON.parse(data);
+                me.uid = data.uid;
+                me.roomId = data.roomId;
+                socket.emit(event.addPlayer, me);
+            })
+
+
+            me.opponeents = [];//对手
+            me.firend = [];
+            socket.on(event.deal, function (data) {
                 console.log(data);
-
             });
+            socket.on(event.addPlayer, function (p) {
+                console.log(p);
+            })
             //socket.emit('my other event', { my: 'data' });
-
         }
-
 
     </script>
 

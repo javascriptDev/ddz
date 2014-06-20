@@ -1,6 +1,9 @@
 /**
  * Created by a2014 on 14-6-20.
  */
+
+var Poker = require('./Poker');
+
 function Table(o) {
     this.poker = [];
     this.player = o.player || [];
@@ -10,14 +13,7 @@ function Table(o) {
 }
 
 Table.prototype = {
-    animate: function (el, distance) {
-        el.style.webkitTransform = 'translate3d(0,' + distance + 'px,0)';
-    },
-    /**
-     * 发牌
-     *
-     * @method deal
-     */
+
     deal: function () {
         var index = Math.ceil(Math.random() * 1000) % this.poker.length;
         if (this.poker.length > 3) {
@@ -37,28 +33,7 @@ Table.prototype = {
         this.generatePoker();
         this.deal();
     },
-    generatePoker: function () {
-        for (var j = 0; j < 13; j++) {
-            for (var i = 0; i < 4; i++) {
-                this.poker.push(
-                    new Poker({
-                        type: pokerHelper.type[i],
-                        val: pokerHelper.val[j]
-                    })
-                )
 
-            }
-        }
-        //生成大小王
-        this.poker.push(new Poker({
-            type: pokerHelper.type[4],
-            val: pokerHelper.val[13]
-        }));
-        this.poker.push(new Poker({
-            type: pokerHelper.type[4],
-            val: pokerHelper.val[14]
-        }))
-    },
     render: function () {
         var me = this;
         this.player.forEach(function (player) {
@@ -95,6 +70,10 @@ Table.prototype = {
                 }
             }
         }
+
     }
 }
+
+
 exports.Table = Table;
+exports.generatePoker = generatePoker;

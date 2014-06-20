@@ -3,7 +3,6 @@
  */
 var http = require('http');
 var fs = require('fs');
-var table = require('./Table');
 var Poker = require('./Poker');
 
 
@@ -21,18 +20,15 @@ function login(res, postDataChunk) {
 
     } else {
         var player = JSON.parse(postDataChunk.toString());
-        rooms[0].players.push();
         var uid = Math.random() * 19999,
             roomId = rooms[0].id;
         // 设置cookie
         res.setHeader("Set-Cookie", ['uid=' + Math.random() * 19999, 'roomid=' + roomId]);
-        players.push({
-            success: true,
-            id: uid,
-            roomId: roomId
-        })
         res.write(JSON.stringify({
-            success: true
+            uid: uid,
+            roomId: roomId,
+            success: true,
+            uname: player.uname
         }));
         res.end();
     }
@@ -47,8 +43,6 @@ var server = http.createServer(function (req, res) {
     req.on("data", function (postDataChunk) {
         if (url.indexOf('login') != -1) {
             login(res, postDataChunk);
-        } else if (url.indexOf('getPoker') != -1) {
-            getPoker(req, res);
         }
     });
 
@@ -83,7 +77,6 @@ var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
     var event = {
         addPlayer: 'addPlayer',
-
         deal: 'deal',       //发牌
         dealEnd: 'dealEnd', //发牌完毕
         pillage: 'pillage'  //抢地主
@@ -92,6 +85,23 @@ io.on('connection', function (socket) {
 
 
     socket.on('addPlayer', function (data) {
-        console.log(data);
+        socket.join(data.roomId);
+        rooms.forEach(function (item, index) {
+            if (item.id == data.roomId) {
+                if (item.players.length == 3) {
+                    console.log(1);
+                    Poker.generatePoker(data.players);
+
+                    io.socket.in(data.roomId).emit(event.deal, data.players);
+                } else {
+                    rooms[index].players.push(data);
+                    io.sockets.in(data.roomId).emit(event.addPlayer, item.players);
+                }
+
+            }
+        })
+
     });
+
+
 });
