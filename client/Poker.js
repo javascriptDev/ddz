@@ -28,6 +28,4 @@ Poker.prototype = {
 
 
 }
-exports.Poker = Poker;
-exports.PokerHelper = playerHelper;
 

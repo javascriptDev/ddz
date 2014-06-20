@@ -2,10 +2,10 @@
  * Created by a2014 on 14-6-20.
  */
 
-pokerHelper = {};
-pokerHelper.type = ['spade', 'heart', 'diamond', 'club', 'king']; //黑红片花
-
-pokerHelper.val = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', '大王', '小王'];
+var pokerHelper = {
+    type: ['spade', 'heart', 'diamond', 'club', 'king'], //黑红片花
+    val: ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', '大王', '小王']
+};
 
 function Poker(o) {
     this.type = o.type;
@@ -29,5 +29,5 @@ Poker.prototype = {
 
 }
 exports.Poker = Poker;
-exports.PokerHelper = playerHelper;
+exports.PokerHelper = pokerHelper;
 

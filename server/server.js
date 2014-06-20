@@ -3,9 +3,8 @@
  */
 var http = require('http');
 var fs = require('fs');
-var table = require('Table');
-var Player = require('Player');
-var Poker = require('Poker');
+var table = require('./Table');
+var Poker = require('./Poker');
 
 
 //所有斗地主的房间
@@ -16,7 +15,7 @@ var rooms = [
 //所有登陆的用户
 var players = [];
 
-function login(res) {
+function login(res, postDataChunk) {
     if (rooms[0].players.length == 3) {
         var pokers = getPoker();
 
@@ -43,12 +42,11 @@ function getPoker(req, res) {
     return new table().poker;
 
 }
-
-http.createServer(function (req, res) {
+var server = http.createServer(function (req, res) {
     var url = req.url;
     req.on("data", function (postDataChunk) {
         if (url.indexOf('login') != -1) {
-            login(res);
+            login(res, postDataChunk);
         } else if (url.indexOf('getPoker') != -1) {
             getPoker(req, res);
         }
@@ -78,4 +76,22 @@ http.createServer(function (req, res) {
     }
 
 
-}).listen(8000, null);
+});
+server.listen(8000, null);
+
+var io = require('socket.io').listen(server);
+io.on('connection', function (socket) {
+    var event = {
+        addPlayer: 'addPlayer',
+
+        deal: 'deal',       //发牌
+        dealEnd: 'dealEnd', //发牌完毕
+        pillage: 'pillage'  //抢地主
+
+    }
+
+
+    socket.on('addPlayer', function (data) {
+        console.log(data);
+    });
+});

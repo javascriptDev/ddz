@@ -10,6 +10,7 @@
     <script src="client/Game.js"></script>
     <link href="client/poker.css" rel="stylesheet">
     <link href="client/table.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
 
     <script>
         function post(url, data, cb) {
@@ -24,22 +25,23 @@
             }
 
         }
-        var api = {
-            base: 'http://localhost:8000/',
-            login: this.base + 'login',
-            getPoker: this.base + 'getPoker'
-        }
         window.onload = function () {
             var val = 'asd';
             var data = JSON.stringify(new Player({uname: val}));
+            var event = {
+                addPlayer: 'addPlayer',
+                deal: 'deal',       //发牌
+                dealEnd: 'dealEnd', //发牌完毕
+                pillage: 'pillage'  //抢地主
+            }
 
-            post('', data, function (a) {
+            var socket = io.connect('http://localhost:8000');
 
-            })
+            socket.on(event.addPlayer, function (data) {
+                console.log(data);
 
-
-            // game.begin();
-
+            });
+            //socket.emit('my other event', { my: 'data' });
 
         }
 

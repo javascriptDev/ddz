@@ -74,5 +74,3 @@ Player.prototype = {
 
     }
 }
-exports.Player=Player;
-exports.PlayerHelper=playerHelper;
