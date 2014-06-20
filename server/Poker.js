@@ -35,13 +35,13 @@ var pokerHelper = {
             type: me.type[4],
             val: me.val[14]
         }));
-
         this.splitThree(poker, players);
     },
     splitThree: function (poker, player) {
         var index = Math.ceil(Math.random() * 1000) % poker.length;
         if (poker.length > 3) {
-            player[poker.length % 3].addPoker(poker[index]);
+            var p = player[poker.length % 3];
+            p.addPoker(poker[index]);
             poker.splice(index, 1);
             this.splitThree(poker, player);
         }
