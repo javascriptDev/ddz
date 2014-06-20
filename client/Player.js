@@ -25,7 +25,7 @@ function Player(o) {
     //头像
     this.head = o.head || '';
     //角色
-    this.role = o.role;
+    this.role = o.role||playerHelper.role.peasants;
     //得分
     this.score = o.score || 0;
     //拥有的牌
@@ -74,3 +74,5 @@ Player.prototype = {
 
     }
 }
+exports.Player=Player;
+exports.PlayerHelper=playerHelper;
