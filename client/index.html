@@ -3,17 +3,44 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="Poker.js"></script>
-    <script src="Player.js"></script>
-    <script src="Timer.js"></script>
-    <script src="Table.js"></script>
-    <script src="Game.js"></script>
-    <link href="poker.css" rel="stylesheet">
-    <link href="table.css" rel="stylesheet">
+    <script src="client/Poker.js"></script>
+    <script src="client/Player.js"></script>
+    <script src="client/Timer.js"></script>
+    <script src="client/Table.js"></script>
+    <script src="client/Game.js"></script>
+    <link href="client/poker.css" rel="stylesheet">
+    <link href="client/table.css" rel="stylesheet">
 
     <script>
+        function post(url, data, cb) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+            xhr.send(data);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 || xhr.readyState == 'complete') {
+                    cb && cb(xhr.responseText);
+
+                }
+            }
+
+        }
+        var api = {
+            base: 'http://localhost:8000/',
+            login: this.base + 'login',
+            getPoker: this.base + 'getPoker'
+        }
         window.onload = function () {
-            game.begin();
+            var val = 'asd';
+            var data = JSON.stringify(new Player({uname: val}));
+
+            post('', data, function (a) {
+
+            })
+
+
+            // game.begin();
+
+
         }
 
 

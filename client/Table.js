@@ -97,3 +97,4 @@ Table.prototype = {
         }
     }
 }
+exports.Table = Table;

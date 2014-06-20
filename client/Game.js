@@ -23,3 +23,5 @@ var game = {
 
     }
 }
+
+exports.game = Game;
