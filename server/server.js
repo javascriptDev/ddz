@@ -33,11 +33,7 @@ function login(res, postDataChunk) {
         res.end();
     }
 }
-function getPoker(req, res) {
 
-    return new table().poker;
-
-}
 var server = http.createServer(function (req, res) {
     var url = req.url;
     req.on("data", function (postDataChunk) {
@@ -84,19 +80,21 @@ io.on('connection', function (socket) {
     }
 
 
-    socket.on('addPlayer', function (data) {
-        socket.join(data.roomId);
+    socket.on('addPlayer', function (player) {
+        socket.join(player.roomId);
         rooms.forEach(function (item, index) {
-            if (item.id == data.roomId) {
-                if (item.players.length == 3) {
-                    console.log(1);
-                    Poker.generatePoker(data.players);
+            if (item.id == player.roomId) {
+                //房间满了
 
-                    io.socket.in(data.roomId).emit(event.deal, data.players);
-                } else {
-                    rooms[index].players.push(data);
-                    io.sockets.in(data.roomId).emit(event.addPlayer, item.players);
+                if (item.players.length <= 2) {
+                    item.players.push(player);
+                    io.sockets.in(player.roomId).emit(event.addPlayer, item.players);
+                    if (item.players.length == 3) {
+                        Poker.m.generatePoker(item.players);
+                        io.socket.in(data.roomId).emit(event.deal, item.players);
+                    }
                 }
+
 
             }
         })
