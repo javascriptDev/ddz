@@ -78,12 +78,11 @@ io.on( 'connection', function( socket ) {
 		pillage: 'pillage'  //抢地主
 
 	}
-	socket.on( 'addPlayer', function( player ) {
+	socket.on( event.addPlayer, function( player ) {
 		socket.join( player.roomId );
 		rooms.forEach( function( item, index ) {
 			if(item.id == player.roomId) {
 				//房间满了
-
 				if(item.players.length <= 2) {
 					item.players.push( player );
 					io.sockets.in( player.roomId ).emit( event.addPlayer, item.players );
@@ -91,11 +90,16 @@ io.on( 'connection', function( socket ) {
 						Poker.m.generatePoker( item.players );
 						io.sockets.in( player.roomId ).emit( event.deal, item.players );
 					}
+				} else {
+
 				}
 			}
-		})
+		} )
 
-	});
+	} );
+	socket.on( event.dealEnd, function() {
+
+	} )
 
 
 } );
